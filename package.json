@@ -4,11 +4,12 @@
   "description": "A handy tool for looking up EigenLayer airdrop without the risk of being sybil.",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hubei-xhjy/eigenlayer-airdrop-lookup.git"
+    "url": "git+https://github.com/kingsmai/eigenlayer-airdrop-lookup.git"
   },
   "keywords": [
     "eigenlayer",
@@ -17,9 +18,9 @@
   "author": "kingsmai",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/hubei-xhjy/eigenlayer-airdrop-lookup/issues"
+    "url": "https://github.com/kingsmai/eigenlayer-airdrop-lookup/issues"
   },
-  "homepage": "https://github.com/hubei-xhjy/eigenlayer-airdrop-lookup#readme",
+  "homepage": "https://github.com/kingsmai/eigenlayer-airdrop-lookup#readme",
   "dependencies": {
     "csv-parse": "^5.5.5",
     "express": "^4.19.2",
