@@ -1,0 +1,25 @@
+doctype html
+html
+  head
+    title EigenLayer 空投地址查询工具
+    link(rel='stylesheet', href='/style.css')
+  body
+    div(class="container")
+      h1 EigenLayer 空投地址查询工具
+      p 输入空投地址，查询空投代币数量，支持批量查询，目前只收录和 app.eigenlayer.xyz 交互过的地址
+      p 所有数据在本地数据库，不会上传到服务器，所以不用担心女巫问题
+      p EVM: 0x585805FBc05eBeb536a03bfFD36F59B5E7777777
+      form(action="/search", method="post")
+        textarea(name="addresses", rows="10", cols="50", placeholder="输入地址，每行一个")
+        br
+        button(type="submit") 查询
+      if results
+        h2 查询结果
+        table
+          tr
+            th 地址
+            th 代币数量
+          each val in results
+            tr
+              td= val.address
+              td= val.token
