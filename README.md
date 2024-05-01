@@ -4,6 +4,8 @@
 
 这个项目是一个基于 Node.js 和 Express 的 Web 应用，它允许用户输入 Ethereum 地址列表，并查询与之对应的令牌（Tokens）数量。数据来源是一个预先准备好的 CSV 文件，其中包含地址和空投数。
 
+! [Screenshot](demo.png)
+
 ## 功能特性
 
 - 用户可以通过多行文本框输入多个地址。
@@ -37,7 +39,7 @@ npm install
 3. 启动服务器：
 
 ```bash
-node run start
+npm run start
 ```
 
 4. 访问应用：

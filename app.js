@@ -1,6 +1,7 @@
 const express = require("express");
 const fs = require("fs");
 const csv = require("csv-parse");
+const os = require("os"); // 引入 os 模块
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -18,29 +19,21 @@ fs.createReadStream("data.csv")
     })
   )
   .on("data", (row) => {
-    tokens.set(row.Address, row.Tokens); // 确保字段名与 CSV 标头匹配
+    tokens.set(row.Address, row.Tokens);
   })
   .on("end", () => {
     console.log("CSV file successfully processed");
-    // console.log(tokens); // 输出处理完的数据，以便于检查
   });
 
-// 根页面
 app.get("/", (req, res) => {
   res.render("index");
 });
 
-// 查询处理
 app.post("/search", (req, res) => {
-  // 通过替换 \r\n 以及 \r，确保在所有操作系统上均能正确分割地址
   const addresses = req.body.addresses.replace(/\r\n|\r/g, "\n").split("\n");
-  // console.log(addresses); // 可以在控制台看到处理后的地址列表，以便调试
   const results = addresses.map((address) => {
     const tokenValue = tokens.get(address.trim());
-    // 检查 tokenValue 是否存在，并格式化为三位小数
-    const formattedToken = tokenValue
-      ? parseFloat(tokenValue).toFixed(3)
-      : "未找到";
+    const formattedToken = tokenValue ? parseFloat(tokenValue).toFixed(3) : "未找到";
     return {
       address,
       token: formattedToken,
@@ -49,6 +42,20 @@ app.post("/search", (req, res) => {
   res.render("index", { results });
 });
 
+// 获取本机 IP 地址
+function getLocalIpAddress() {
+  const interfaces = os.networkInterfaces();
+  for (const name of Object.keys(interfaces)) {
+    for (const iface of interfaces[name]) {
+      if (iface.family === 'IPv4' && !iface.internal) {
+        return iface.address;
+      }
+    }
+  }
+  return '127.0.0.1'; // 默认返回本地地址
+}
+
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  const localIp = getLocalIpAddress();
+  console.log(`Server is running on http://${localIp}:${PORT}`);
 });
