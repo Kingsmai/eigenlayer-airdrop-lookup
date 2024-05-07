@@ -9,6 +9,14 @@ app.set("view engine", "pug");
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 
+// 输出访问者 IP 的中间件
+app.use((req, res, next) => {
+  const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+  console.log(`访问者 IP：${ip}`);
+  next();
+});
+
+
 // 读取 CSV 文件
 const tokens = new Map();
 fs.createReadStream("data.csv")
@@ -31,9 +39,11 @@ app.get("/", (req, res) => {
 
 app.post("/search", (req, res) => {
   const addresses = req.body.addresses.replace(/\r\n|\r/g, "\n").split("\n");
+  const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
   const results = addresses.map((address) => {
     const tokenValue = tokens.get(address.trim());
     const formattedToken = tokenValue ? parseFloat(tokenValue).toFixed(3) : "未找到";
+    console.log(`IP: ${ip}, 查询地址：${address.trim()}，结果：${formattedToken}`);
     return {
       address,
       token: formattedToken,
